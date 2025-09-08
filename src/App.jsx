@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./App.css";
 
 const pizzaData = [
@@ -64,15 +63,20 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+
   return (
     <main className={"menu"}>
       <h2>Our Menu</h2>
-      <Pizza
-        name='Pizza Spinaci'
-        ingredients='Tomato, mozarella, spinach, and ricotta cheese'
-        photoName='pizzas/spinaci.jpg'
-        price={12}
-      />
+
+      <ul className={"pizzas"}>
+        {pizzas.map(pizza => (
+          <Pizza
+            pizzaObj={pizza}
+            key={pizza.name}
+          />
+        ))}
+      </ul>
     </main>
   );
 }
@@ -85,22 +89,29 @@ function Footer() {
 
   return (
     <footer className={"footer"}>
-      {new Date().toLocaleTimeString()}. We're currently open.
+      {isOpen && (
+        <div className='order'>
+          <p>We're open until {closeHour}:00. Come visit us or order online.</p>
+          <button className={"btn"}>ORDER</button>
+        </div>
+      )}
     </footer>
   );
 }
 
 function Pizza(props) {
   return (
-    <div className={"pizza"}>
+    <li className={"pizza"}>
       <img
-        src={props.photoName}
-        alt={props.name}
+        src={props.pizzaObj.photoName}
+        alt={props.pizzaObj.name}
       />
-      <h2>{props.name}</h2>
-      <p>{props.ingredients}</p>
-      <span>{props.price}</span>
-    </div>
+      <div>
+        <h3>{props.pizzaObj.name}</h3>
+        <p>{props.pizzaObj.ingredients}</p>
+        <span>{props.pizzaObj.price}</span>
+      </div>
+    </li>
   );
 }
 
